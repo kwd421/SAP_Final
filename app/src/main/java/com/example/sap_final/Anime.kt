@@ -5,5 +5,7 @@ data class Anime(
     val title: String,
     val maker: String,
     val rating: Int,
-    val chara: String
+    val url: String,
+    val director: String,
+    val story: String?
 )
