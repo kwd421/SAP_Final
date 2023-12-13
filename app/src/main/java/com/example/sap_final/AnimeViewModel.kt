@@ -9,8 +9,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AnimeViewModel() : ViewModel() {
-    private val SERVER_URL = "https://port-0-backend-3yl7k2blonrx0wi.sel5.cloudtype.app/"
+class AnimeViewModel: ViewModel() { // ()가 warning 떠서 삭제
+    // SERVER_URL 이라고 했을 시 underscore warning 떠 serverURL 로 변수명 변경
+    private val serverURL: String = "https://port-0-backend-3yl7k2blonrx0wi.sel5.cloudtype.app/"
     private val animeApi: AnimeApi
     private val _animeList = MutableLiveData<List<Anime>>()
     val animeList: LiveData<List<Anime>>
@@ -18,7 +19,7 @@ class AnimeViewModel() : ViewModel() {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl(SERVER_URL)
+            .baseUrl(serverURL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
