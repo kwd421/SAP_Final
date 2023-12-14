@@ -1,5 +1,8 @@
 package com.example.sap_final
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,19 +22,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -102,7 +113,7 @@ fun AnimeItem(navController: NavController,
                 .padding(8.dp)
         ) {
             AsyncImage(
-                model = animeList[index].url,
+                model = animeList[index].poster,
                 contentDescription = "애니 포스터 이미지",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
@@ -130,7 +141,7 @@ fun AnimeItem(navController: NavController,
 
 @Composable
 fun TextTitle(title: String) {
-    Text(title, fontSize = 30.sp)
+    Text(title, fontSize = 25.sp, lineHeight = 28.sp)
 }
 
 @Composable
@@ -140,11 +151,12 @@ fun TextMaker(maker: String) {
 
 @Composable
 fun AnimeDetail(anime: Anime) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .padding(16.dp)
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         RatingBar(anime.rating)
         Spacer(modifier = Modifier.height(16.dp))
@@ -158,26 +170,48 @@ fun AnimeDetail(anime: Anime) {
         Spacer(modifier = Modifier.height(16.dp))
 
         AsyncImage(
-            model = anime.url,
+            model = anime.poster,
             contentDescription = "애니 포스터 이미지",
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .width(400.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+
+        Button(onClick = {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(anime.trailer)
+            )
+            startActivity(context, intent, null)
+        }) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                YoutubeIcon()
+                Spacer(modifier = Modifier.width(16.dp))
+                Text("YouTube 예고편 감상", fontSize = 20.sp)
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
             AsyncImage(
                 model = anime.makerlogo,
                 contentDescription = "제작사 로고 이미지",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(100.dp)
                     .clip(RoundedCornerShape(percent = 10))
             )
             Text(anime.maker,
-                fontSize = 30.sp,
+                fontSize = 25.sp,
                 textAlign = TextAlign.Center)
         }
         Spacer(modifier = Modifier.height(32.dp))
@@ -191,11 +225,13 @@ fun AnimeDetail(anime: Anime) {
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
+        Text("줄거리", fontSize = (20.sp),
+            modifier = Modifier.align(CenterHorizontally)
+        )
         anime.story?.let {
             Text(
-                "줄거리\n$it",
+                it,
                 fontSize = 18.sp,
-                textAlign = TextAlign.Center,
                 lineHeight = 23.sp
             )
         }
@@ -213,5 +249,28 @@ fun RatingBar(makers: Int) {
                 modifier = Modifier.size(48.dp),
                 tint = Color.Red)
         }
+    }
+}
+
+@Composable
+fun YoutubeIcon() {
+    Canvas(
+        modifier = Modifier
+            .size(70.dp)
+    ) {
+
+        val path = Path().apply {
+            moveTo(size.width * .40f, size.height * .33f)
+            lineTo(size.width * .69f, size.height * .50f)
+            lineTo(size.width * .40f, size.height * .68f)
+            close()
+        }
+        drawRoundRect(
+            color = Color.Red,
+            cornerRadius = CornerRadius(40f, 40f),
+            size = Size(size.width, size.height * .70f),
+            topLeft = Offset(size.width.times(.0f), size.height.times(.15f))
+        )
+        drawPath(color = Color.White, path = path)
     }
 }
