@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.sap_final"
+    namespace = "com.example.s20160042whatAni"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.sap_final"
+        applicationId = "com.example.s20160042whatAni"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

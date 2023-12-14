@@ -1,4 +1,4 @@
-package com.example.sap_final.ui.theme
+package com.example.s20160042whatAni.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package com.example.sap_final
+package com.example.s20160042whatAni
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import com.example.sap_final.ui.theme.SAP_FinalTheme
+import com.example.s20160042whatAni.ui.theme.SAP_FinalTheme
 
 class MainActivity : ComponentActivity() {
     private val viewModel: AnimeViewModel by viewModels()
